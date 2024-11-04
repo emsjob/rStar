@@ -223,7 +223,7 @@ class GSM8KEvaluator(Evaluator):
 
         return correct
 
-    def extract_answer_from_gold_solution(self, solution: str | float):
+    def extract_answer_from_gold_solution(self, solution):
         """Extract the answer from the gold solution."""
         if isinstance(solution, float):
             return str(solution)
@@ -354,7 +354,7 @@ class SVAMPEvaluator(Evaluator):
 
         return correct
 
-    def extract_answer_from_gold_solution(self, solution: str | float):
+    def extract_answer_from_gold_solution(self, solution):
         """Extract the answer from the gold solution."""
         if isinstance(solution, float):
             return str(solution)
