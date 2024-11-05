@@ -7,3 +7,5 @@ colorama
 python-levenshtein
 pyparsing
 vllm
+bitsandbytes
+accelerate

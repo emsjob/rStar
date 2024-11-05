@@ -12,7 +12,7 @@ def get_parser():
 
     allowed_apis = ["together", "huggingface", "llama", "vllm", "debug", "gpt3.5-turbo"]
     parser.add_argument(
-        "--api", type=str, choices=allowed_apis, default="vllm", help=f"API to use: Choose from {allowed_apis}."
+        "--api", type=str, choices=allowed_apis, default="huggingface", help=f"API to use: Choose from {allowed_apis}."
     )
 
     parser.add_argument("--seed", type=int, default=42)
@@ -36,6 +36,7 @@ def get_parser():
     parser.add_argument("--max_num_worker", type=int, default=3, help="maximum number of workers for dataloader")
     parser.add_argument("--test_batch_size", type=int, default=1)  # batch_size
     parser.add_argument("--tensor_parallel_size", type=int, default=1)  # tensor_parallel_size
+    parser.add_argument("--load_in_4bit", type=bool, default=True) # quantized model
 
     #! prompt settings
     parser.add_argument("--prompts_root", default="prompts")
