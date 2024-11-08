@@ -67,20 +67,20 @@ def main(args):
 
         model_solutions, stopping_id, model_all_solutions = [], -1, []
 
-        # try:
-        model_solutions, stopping_id, model_all_solutions = search_for_answers(
-            args=args, user_question=problem, question_id=i, gt_answer=gt_solution, generator=generator
-        )
-        # except GeneratorError as e:
-        #     print(e)
-        #     js["generator_error"] = {
-        #         "source": e.source,
-        #         "io_input": e.io_input,
-        #         "io_output_list": e.io_output_list,
-        #     }
-        # except Exception as e:
-        #     print(e)
-        #     js["other_error"] = {"text": str(e)}
+        try:
+            model_solutions, stopping_id, model_all_solutions = search_for_answers(
+                args=args, user_question=problem, question_id=i, gt_answer=gt_solution, generator=generator
+            )
+        except GeneratorError as e:
+            print(e)
+            js["generator_error"] = {
+                "source": e.source,
+                "io_input": e.io_input,
+                "io_output_list": e.io_output_list,
+            }
+        except Exception as e:
+            print(e)
+            js["other_error"] = {"text": str(e)}
 
         num_tested += 1
 

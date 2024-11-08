@@ -16,6 +16,11 @@ try:
 except:
     pass
 
+try:
+    from models.HuggingFace_API import load_HF_model, generate_with_HF_model
+except:
+    pass
+
 
 class IO_System:
     """Input/Output system"""
@@ -35,6 +40,8 @@ class IO_System:
 
         self.call_counter = 0
         self.token_counter = 0
+
+        self.hf_tokenizer, self.hf_model = load_HF_model(self.model_ckpt)
 
     def generate(self, model_input, max_tokens: int, num_return: int, stop_tokens):
         if isinstance(model_input, str):
@@ -66,6 +73,14 @@ class IO_System:
                 io_output_list = gpt_response
                 self.call_counter += num_return
                 self.token_counter += 0
+            elif self.api == "huggingface":
+                huggingface_response = generate_with_HF_model(
+                        tokenizer=self.hf_tokenizer,
+                        model=self.hf_model,
+                        input=model_input
+                )
+                io_output_list = huggingface_response
+                self.call_counter += 1
             elif self.api == "debug":
                 io_output_list = ["Debug: The answer is generated with debug mode, 233." for _ in range(num_return)]
             else:
@@ -108,6 +123,14 @@ class IO_System:
                     io_output_list.append(gpt_response)
                     self.call_counter += num_return
                     self.token_counter += 0
+            elif self.api == "huggingface":
+                huggingface_response = generate_with_HF_model(
+                        tokenizer=self.hf_tokenizer,
+                        model=self.hf_model,
+                        input=model_input
+                )
+                io_output_list = huggingface_response
+                self.call_counter += 1
             elif self.api == "debug":
                 io_output_list = [
                     ["Debug: The answer is generated with debug mode, 233." for _ in range(num_return)]

@@ -43,7 +43,7 @@ def get_parser():
 
     #! dataset settings
     parser.add_argument("--data_root", default="data")
-    allowed_dataset_names = ["MATH", "GSM8K", "GSM8KHARD", "STG", "SVAMP", "MULTIARITH"]
+    allowed_dataset_names = ["MATH", "GSM8K", "GSM8KHARD", "STG", "SVAMP", "MULTIARITH", "GSM8K_HARD"]
     parser.add_argument(
         "--dataset_name",
         required=True,

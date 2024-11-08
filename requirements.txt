@@ -9,3 +9,5 @@ pyparsing
 vllm
 bitsandbytes
 accelerate
+platformdirs
+filelock
