@@ -28,6 +28,7 @@
 
 nvidia-smi
 # Load the cuda module
+source .venv/bin/activate
 module load cuda/11.6
 
 ### /appl/cuda/11.6.0/samples/bin/x86_64/linux/release/deviceQuery
