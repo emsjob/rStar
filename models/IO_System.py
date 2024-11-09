@@ -79,6 +79,7 @@ class IO_System:
                         model=self.hf_model,
                         input=model_input
                 )
+                print(f"HUGGINGFACE RESPONSE FOR STR INPUT: {huggingface_response}")
                 io_output_list = huggingface_response
                 self.call_counter += 1
             elif self.api == "debug":
@@ -129,6 +130,7 @@ class IO_System:
                         model=self.hf_model,
                         input=model_input
                 )
+                print(f"HUGGINGFACE RESPONSE FOR LIST INPUT: {huggingface_response}")
                 io_output_list = huggingface_response
                 self.call_counter += 1
             elif self.api == "debug":
