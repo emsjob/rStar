@@ -26,10 +26,9 @@
 #BSUB -e gpu_%J.err
 # -- end of LSF options --
 
-nvidia-smi
-# Load the cuda module
+module-load python3/3.10.12
+module load cuda/12.6
 source .venv/bin/activate
-module load cuda/11.6
 
 ### /appl/cuda/11.6.0/samples/bin/x86_64/linux/release/deviceQuery
 chmod +x scripts/run_gsm8k_generator.sh
