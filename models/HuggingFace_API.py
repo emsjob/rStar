@@ -10,19 +10,24 @@ from transformers import (
 from tqdm import tqdm
 import torch.nn.functional as F
 import numpy as np
+import os
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True
 )
 
 def load_HF_model(ckpt) -> tuple:
-    tokenizer = AutoTokenizer.from_pretrained(ckpt)
+    with open(f"{os.environ.get('PWD')}/models/token.txt", "r") as f:
+       token = f.read().rstrip()
+    tokenizer = AutoTokenizer.from_pretrained(ckpt, token=token)
+    tokenizer.pad_token = tokenizer.eos_token
     model = AutoModelForCausalLM.from_pretrained(
         ckpt,
         torch_dtype=torch.float16,
         device_map="auto",
         trust_remote_code=True,
-        quantization_config=bnb_config
+        quantization_config=bnb_config,
+        token=token
     )
     return tokenizer, model
 
