@@ -4,7 +4,8 @@ from vllm import LLM, SamplingParams
 from transformers import AutoTokenizer
 import numpy as np
 import math
-
+import torch
+import torch.nn.functional as F
 
 def load_vLLM_model(model_ckpt, seed, tensor_parallel_size=1, half_precision=False, max_num_seqs=256):
     tokenizer = AutoTokenizer.from_pretrained(model_ckpt)
@@ -31,11 +32,26 @@ def load_vLLM_model(model_ckpt, seed, tensor_parallel_size=1, half_precision=Fal
 
     return tokenizer, llm
 
+def calculate_entropy(logits):
+    logp = F.log_softmax(logits, dim=-1)
+    p = torch.exp(logp)
+    entropy = -torch.sum(p * logp, dim=-1)
+    return entropy.item()
+
+def adaptive_temperature(logits, entropy):
+    polyfit = np.array([-0.037, 0.481, -2.3, 4.917, -1.791])
+    beta = np.where(entropy > 0.5, np.max([np.polyval(polyfit, entropy), 1.0]), 1.0)
+    return beta.item() * logits
+
+def logit_proc(prev_tokens, logits):
+    entropy = calculate_entropy(logits)
+    updated_logits = adaptive_temperature(logits, entropy)
+    return updated_logit
 
 def generate_with_vLLM_model(
     model,
     input,
-    temperature=0.8,
+    temperature=1.0,
     top_p=0.95,
     top_k=40,
     repetition_penalty=1.1,
@@ -52,6 +68,7 @@ def generate_with_vLLM_model(
         n=n,
         logprobs=logprobs,
         max_tokens=max_tokens,
+        logits_processors=[logit_proc],
         stop=stop,
     )
 
