@@ -7,7 +7,5 @@ colorama
 python-levenshtein
 pyparsing
 vllm
-bitsandbytes
-accelerate
 platformdirs
 filelock
